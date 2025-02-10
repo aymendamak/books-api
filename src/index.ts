@@ -15,7 +15,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   logger.error(`Error occurred: ${err.message}`);
   res.status(500).send("Internal Server Error");

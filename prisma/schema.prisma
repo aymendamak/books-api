@@ -15,7 +15,7 @@ model Author {
   id String @id @default(uuid())
   name String
   books Book[]
-  description String
+  biography String
 }
 
 model Book {

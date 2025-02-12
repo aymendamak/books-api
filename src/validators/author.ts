@@ -8,9 +8,9 @@ export const createAuthorValidator = [
     .notEmpty()
     .withMessage("The Author name should not be empty"),
   expressValidator
-    .body("description")
+    .body("biography")
     .notEmpty()
-    .withMessage("Description should not be empty"),
+    .withMessage("Biography should not be empty"),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = expressValidator.validationResult(req);
     if (!errors.isEmpty()) {

@@ -26,15 +26,20 @@ export const createBook = async (
   res: express.Response
 ) => {
   const bookData = req.body;
-  const book = await bookClient.create({
-    data: {
-      title: bookData.title,
-      author: {
-        connect: { id: bookData.authorId },
+  try {
+    const book = await bookClient.create({
+      data: {
+        title: bookData.title,
+        description: bookData.description,
+        author: {
+          connect: { id: bookData.authorId },
+        },
       },
-    },
-  });
-  res.status(201).json({ data: book });
+    });
+    res.status(201).json({ data: book });
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
 };
 
 export const updateBookById = async (

@@ -7,12 +7,13 @@ import {
   updateAuthorById,
   deleteAuthorById,
 } from "../controllers/author.controller";
+import { createAuthorValidator } from "../validators/author";
 
 const authoRouter = Router();
 
 authoRouter.get("/", getAuthors);
 authoRouter.get("/:id", getAuthorById);
-authoRouter.post("/create", createAuthor);
+authoRouter.post("/create", createAuthorValidator, createAuthor);
 authoRouter.put("/:id", updateAuthorById);
 authoRouter.delete("/:id", deleteAuthorById);
 

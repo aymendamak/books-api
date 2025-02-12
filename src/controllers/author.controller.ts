@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Author, PrismaClient } from "@prisma/client";
 import express from "express";
 
 const authorClient = new PrismaClient().author;
@@ -7,12 +7,16 @@ export const getAuthors = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const authors = await authorClient.findMany({
-    include: {
-      books: true,
-    },
-  });
-  res.status(200).json({ data: authors });
+  try {
+    const authors = await authorClient.findMany({
+      include: {
+        books: true,
+      },
+    });
+    res.status(200).json({ data: authors });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const getAuthorById = async (
@@ -35,7 +39,7 @@ export const createAuthor = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const authorData = req.body;
+  const authorData: Author = req.body;
   const author = await authorClient.create({
     data: authorData,
   });

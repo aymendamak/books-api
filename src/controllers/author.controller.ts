@@ -1,14 +1,14 @@
 import { Author, PrismaClient } from "@prisma/client";
 import express from "express";
 
-const authorClient = new PrismaClient().author;
+const prisma = new PrismaClient();
 
 export const getAuthors = async (
   req: express.Request,
   res: express.Response
 ) => {
   try {
-    const authors = await authorClient.findMany({
+    const authors = await prisma.author.findMany({
       include: {
         books: true,
       },
@@ -24,7 +24,7 @@ export const getAuthorById = async (
   res: express.Response
 ) => {
   const { id } = req.params;
-  const author = await authorClient.findUnique({
+  const author = await prisma.author.findUnique({
     where: {
       id: id,
     },
@@ -40,7 +40,7 @@ export const createAuthor = async (
   res: express.Response
 ) => {
   const authorData: Author = req.body;
-  const author = await authorClient.create({
+  const author = await prisma.author.create({
     data: authorData,
   });
   res.status(201).json({ data: author });
@@ -53,7 +53,7 @@ export const updateAuthorById = async (
   const { id } = req.params;
   const authorData = req.body;
 
-  const author = await authorClient.update({
+  const author = await prisma.author.update({
     where: {
       id: id,
     },
@@ -67,7 +67,7 @@ export const deleteAuthorById = async (
   res: express.Response
 ) => {
   const { id } = req.params;
-  await authorClient.delete({
+  await prisma.author.delete({
     where: {
       id: id,
     },

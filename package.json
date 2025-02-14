@@ -18,7 +18,7 @@
     "@types/node": "^22.10.2",
     "express": "^4.21.2",
     "jest": "^29.7.0",
-    "jest-mock-extended": "^2.0.9",
+    "jest-mock-extended": "^2.0.4",
     "nodemon": "^3.1.9",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",

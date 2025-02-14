@@ -7,7 +7,7 @@ import {
   updateAuthorById,
   deleteAuthorById,
 } from "../controllers/author.controller";
-import { createAuthorValidator } from "../validators/author";
+import { createAuthorValidator } from "../middleware/author-validation.middleware";
 
 const authoRouter = Router();
 

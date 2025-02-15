@@ -7,7 +7,7 @@ import {
   updateBookById,
   deleteBookById,
 } from "../controllers/book.controller";
-import { createBookValidator } from "../middleware/book-validation.middleware";
+import { createBookValidator } from "../middlewares/book-validation";
 
 const bookRouter = Router();
 

@@ -3,28 +3,48 @@ import express from "express";
 
 const bookClient = new PrismaClient().book;
 
-export const getBooks = async (req: express.Request, res: express.Response) => {
-  const books = await bookClient.findMany();
-  res.status(200).json({ data: books });
+export const getBooks = async (
+  req: express.Request,
+  res: express.Response
+): Promise<void> => {
+  try {
+    const books = await bookClient.findMany();
+    res.status(200).json({ data: books });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch books", details: error.message });
+  }
 };
 
 export const getBookById = async (
   req: express.Request,
   res: express.Response
-) => {
-  const { id } = req.params;
-  const book = await bookClient.findUnique({
-    where: {
-      id: id,
-    },
-  });
-  res.json(book);
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const book = await bookClient.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!book) {
+      res.status(404).json({ error: "Book not found" });
+      return;
+    }
+    res.status(200).json({ data: book });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch author", details: error.message });
+  }
 };
 
 export const createBook = async (
   req: express.Request,
   res: express.Response
-) => {
+): Promise<void> => {
   const bookData = req.body;
   try {
     const book = await bookClient.create({
@@ -45,28 +65,55 @@ export const createBook = async (
 export const updateBookById = async (
   req: express.Request,
   res: express.Response
-) => {
-  const { id } = req.params;
-  const bookData = req.body;
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const bookData = req.body;
 
-  const book = await bookClient.update({
-    where: {
-      id: id,
-    },
-    data: bookData,
-  });
-  res.status(200).json({ data: book });
+    // Check if author exists
+    const existingBook = await bookClient.findUnique({
+      where: { id },
+    });
+
+    if (!existingBook) {
+      res.status(404).json({ error: "Book not found" });
+      return;
+    }
+    const book = await bookClient.update({
+      where: { id },
+      data: bookData,
+    });
+    res.status(200).json({ data: book });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to update book", details: error.message });
+  }
 };
 
 export const deleteBookById = async (
   req: express.Request,
   res: express.Response
-) => {
-  const { id } = req.params;
-  await bookClient.delete({
-    where: {
-      id: id,
-    },
-  });
-  res.status(204).json();
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const existingAuthor = await bookClient.findUnique({
+      where: { id },
+    });
+
+    if (!existingAuthor) {
+      res.status(404).json({ error: "Book not found" });
+      return;
+    }
+
+    await bookClient.delete({
+      where: { id },
+    });
+    res.status(204).send();
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to delete author", details: error.message });
+  }
 };

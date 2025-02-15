@@ -9,12 +9,12 @@ import {
 } from "../controllers/author.controller";
 import { createAuthorValidator } from "../middleware/author-validation.middleware";
 
-const authoRouter = Router();
+const authorRouter = Router();
 
-authoRouter.get("/", getAuthors);
-authoRouter.get("/:id", getAuthorById);
-authoRouter.post("/create", createAuthorValidator, createAuthor);
-authoRouter.put("/:id", updateAuthorById);
-authoRouter.delete("/:id", deleteAuthorById);
+authorRouter.get("/", getAuthors);
+authorRouter.get("/:id", getAuthorById);
+authorRouter.post("/create", createAuthorValidator, createAuthor);
+authorRouter.put("/:id", updateAuthorById);
+authorRouter.delete("/:id", deleteAuthorById);
 
-export default authoRouter;
+export default authorRouter;

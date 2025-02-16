@@ -6,4 +6,5 @@ module.exports = {
   transform: {
     "^.+.tsx?$": ["ts-jest", {}],
   },
+  setupFilesAfterEnv: ["<rootDir>/prisma/singleton.ts"],
 };

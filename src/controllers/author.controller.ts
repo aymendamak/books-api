@@ -1,7 +1,6 @@
-import { Author, PrismaClient } from "@prisma/client";
+import { Author } from "@prisma/client";
 import express from "express";
-
-const prisma = new PrismaClient();
+import prisma from "../../prisma/client";
 
 export const getAuthors = async (
   req: express.Request,
@@ -52,7 +51,6 @@ export const createAuthor = async (
   try {
     const authorData: Author = req.body;
 
-    // Basic validation
     if (!authorData.name) {
       res.status(400).json({ error: "Author name is required" });
       return;
@@ -124,7 +122,7 @@ export const deleteAuthorById = async (
         where: { id },
       }),
     ]);
-    res.status(204).send();
+    res.status(200).json({ message: "Author deleted successfully" });
   } catch (error) {
     res
       .status(500)

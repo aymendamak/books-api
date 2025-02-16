@@ -1,14 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../prisma/client";
+import { Book } from "@prisma/client";
 import express from "express";
-
-const bookClient = new PrismaClient().book;
 
 export const getBooks = async (
   req: express.Request,
   res: express.Response
 ): Promise<void> => {
   try {
-    const books = await bookClient.findMany();
+    const books = await prisma.book.findMany();
     res.status(200).json({ data: books });
   } catch (error) {
     res
@@ -23,7 +22,7 @@ export const getBookById = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const book = await bookClient.findUnique({
+    const book = await prisma.book.findUnique({
       where: {
         id: id,
       },
@@ -47,7 +46,7 @@ export const createBook = async (
 ): Promise<void> => {
   const bookData = req.body;
   try {
-    const book = await bookClient.create({
+    const book = await prisma.book.create({
       data: {
         title: bookData.title,
         description: bookData.description,
@@ -71,7 +70,7 @@ export const updateBookById = async (
     const bookData = req.body;
 
     // Check if author exists
-    const existingBook = await bookClient.findUnique({
+    const existingBook = await prisma.book.findUnique({
       where: { id },
     });
 
@@ -79,7 +78,7 @@ export const updateBookById = async (
       res.status(404).json({ error: "Book not found" });
       return;
     }
-    const book = await bookClient.update({
+    const book = await prisma.book.update({
       where: { id },
       data: bookData,
     });
@@ -98,7 +97,7 @@ export const deleteBookById = async (
   try {
     const { id } = req.params;
 
-    const existingAuthor = await bookClient.findUnique({
+    const existingAuthor = await prisma.book.findUnique({
       where: { id },
     });
 
@@ -107,7 +106,7 @@ export const deleteBookById = async (
       return;
     }
 
-    await bookClient.delete({
+    await prisma.book.delete({
       where: { id },
     });
     res.status(204).send();

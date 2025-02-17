@@ -1,5 +1,4 @@
 import prisma from "../../prisma/client";
-import { Book } from "@prisma/client";
 import express from "express";
 
 export const getBooks = async (
@@ -7,7 +6,11 @@ export const getBooks = async (
   res: express.Response
 ): Promise<void> => {
   try {
-    const books = await prisma.book.findMany();
+    const books = await prisma.book.findMany({
+      include: {
+        author: true,
+      },
+    });
     res.status(200).json({ data: books });
   } catch (error) {
     res

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
+  console.log(req.body);
   try {
     const { username, password } = req.body;
     if (username !== "admin" || password !== "admin") {

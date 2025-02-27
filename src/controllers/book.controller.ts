@@ -69,6 +69,11 @@ export const updateBookById = async (
   res: express.Response
 ): Promise<void> => {
   try {
+    if (!req.params.id) {
+      res.status(400).json({ error: "Id not found" });
+      return;
+    }
+
     const { id } = req.params;
     const bookData = req.body;
 
@@ -98,6 +103,10 @@ export const deleteBookById = async (
   res: express.Response
 ): Promise<void> => {
   try {
+    if (!req.params.id) {
+      res.status(400).json({ error: "Id not found" });
+      return;
+    }
     const { id } = req.params;
 
     const existingAuthor = await prisma.book.findUnique({
@@ -116,6 +125,6 @@ export const deleteBookById = async (
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to delete author", details: error.message });
+      .json({ error: "Failed to delete book", details: error.message });
   }
 };

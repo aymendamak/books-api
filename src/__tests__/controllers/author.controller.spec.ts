@@ -7,6 +7,7 @@ import {
   deleteAuthorById,
 } from "../../controllers/author.controller";
 import { prismaMock } from "../../../prisma/singleton";
+import { mock } from "node:test";
 
 describe("Author Controller", () => {
   let mockReq: Partial<Request>;
@@ -126,18 +127,17 @@ describe("Author Controller", () => {
     });
 
     it("updateAuthorById should handle errors when no author id given", async () => {
+      mockReq.params = {};
       await updateAuthorById(mockReq as Request, mockRes as Response);
 
-      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({
-        error: "Failed to update author",
-        details:
-          "Cannot destructure property 'id' of 'req.params' as it is undefined.",
+        error: "Id not found",
       });
     });
   });
 
-  describe("updateAuthorById", () => {
+  describe("deleteAuthorById", () => {
     it("deleteAuthorById should delete an author", async () => {
       const mockAuthor = { id: "1", name: "Author 1", books: [] };
       mockReq.params = { id: "1" };
@@ -153,13 +153,12 @@ describe("Author Controller", () => {
     });
 
     it("deleteAuthorById should handle errors when no author id given", async () => {
+      mockReq.params = {};
       await deleteAuthorById(mockReq as Request, mockRes as Response);
 
-      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({
-        error: "Failed to delete author",
-        details:
-          "Cannot destructure property 'id' of 'req.params' as it is undefined.",
+        error: "Id not found",
       });
     });
 

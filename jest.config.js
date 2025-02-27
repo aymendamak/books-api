@@ -7,4 +7,7 @@ module.exports = {
     "^.+.tsx?$": ["ts-jest", {}],
   },
   setupFilesAfterEnv: ["<rootDir>/prisma/singleton.ts"],
+  collectCoverage: true,
+  coverageDirectory: "coverage/jest",
+  coverageReporters: ["html", "lcov", "text-summary"],
 };

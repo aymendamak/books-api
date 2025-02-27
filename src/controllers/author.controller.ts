@@ -72,6 +72,11 @@ export const updateAuthorById = async (
   res: express.Response
 ): Promise<void> => {
   try {
+    if (!req.params.id) {
+      res.status(400).json({ error: "Id not found" });
+      return;
+    }
+
     const { id } = req.params;
     const authorData = req.body;
 
@@ -81,7 +86,7 @@ export const updateAuthorById = async (
     });
 
     if (!existingAuthor) {
-      res.status(404).json({ error: "Author not found" });
+      res.status(400).json({ error: "Author not found" });
       return;
     }
 
@@ -102,6 +107,11 @@ export const deleteAuthorById = async (
   res: express.Response
 ): Promise<void> => {
   try {
+    if (!req.params.id) {
+      res.status(400).json({ error: "Id not found" });
+      return;
+    }
+
     const { id } = req.params;
 
     // Check if author exists
